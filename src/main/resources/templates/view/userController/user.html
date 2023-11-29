@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2 th:text="'Hello ' + ${user.getName()}"></h2>
+
+<table th:border="1">
+    <tr>
+        <th th:width="200">Name</th>
+        <th th:width="200">SurName</th>
+        <th th:width="200">Age</th>
+        <th th:width="200">Major</th>
+    </tr>
+    <tbody>
+
+    <tr th:object="${user}">
+        <td th:align="center" th:text="${user.getName()}"></td>
+        <td th:align="center" th:text="${user.getSurName()}"></td>
+        <td th:align="center" th:text="${user.getAge()}"></td>
+        <td th:align="center" th:text="${user.getMajor()}"></td>
+
+        <br>
+
+    </tr>
+    </tbody>
+</table>
+<br>
+<a th:href="@{/logout}">Logout</a>
+<br>
+<a th:href="@{/admin}">Back</a>
+
+
+</body>
+</html>

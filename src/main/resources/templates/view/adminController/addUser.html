@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>User INFO</h2>
+
+
+<form th:action="@{/admin/saveInfo}" th:object="${user}" method="post">
+
+    <div>
+        <input type="hidden" th:field="*{id}"/>
+    </div>
+
+    <div>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}"/>
+    </div>
+    <br>
+    <div>
+        <label>SurName:</label>
+        <input type="text" th:field="*{surName}"/>
+    </div>
+    <br>
+    <div>
+        <label>Age:</label>
+        <input type="number" th:field="*{age}"/>
+    </div>
+    <br>
+    <div>
+        <label>Major:</label>
+        <input type="text" th:field="*{major}"/>
+    </div>
+    <br>
+    <div>
+        <label>Password:</label>
+        <input type="text" th:field="*{password}"/>
+    </div>
+
+<!--    заготовка для чекбоксов ролей-->
+<!--    <br>-->
+<!--    <div>-->
+<!--        <label>Roles: </label>-->
+<!--        <div>-->
+<!--            <th:block th:each="role: ${userRoles}">-->
+<!--                <input-->
+<!--                        type="checkbox" name="userRoles"-->
+<!--                        th:text="${role.role}"-->
+<!--                        th:value="${role.id}"-->
+<!--                        th:field="*{getRoles()}"-->
+<!--                />-->
+<!--            </th:block>-->
+<!--        </div>-->
+<!--    </div>-->
+    <br>
+    <input type="submit" value="save"/>
+</form>
+<br>
+<a th:href="@{/logout}">Logout</a>
+<br>
+</body>
+</html>
