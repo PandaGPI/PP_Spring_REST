@@ -1,20 +1,17 @@
 package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.models.Roles;
 import ru.kata.spring.boot_security.demo.models.User;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+@Transactional
+public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
 
@@ -24,40 +21,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Transactional
-    public void saveOrUpdate(User user) {
-        userDAO.saveOrUpdate(user);
+    public void saveOrUpdate(User user, String[] roles) {
+        userDAO.saveOrUpdate(user, roles);
     }
 
     @Override
-    public List<User> getListUsers() {
+    @Transactional(readOnly = true)
+    public Set<User> getListUsers() {
         return userDAO.getListUsers();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Roles> getListRoles() {
         return userDAO.getListRoles();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserById(Long id) {
         return userDAO.getUserById(id);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
         userDAO.delete(id);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDAO.getUserByName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
+    @Transactional(readOnly = true)
+    public Roles getRoleByName(String role) {
+        return userDAO.getRoleByName(role);
     }
-
-
 }

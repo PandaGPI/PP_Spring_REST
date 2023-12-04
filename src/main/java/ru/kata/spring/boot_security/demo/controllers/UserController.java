@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserController {
-    
+
 
     @GetMapping("/user")
     public String showUser(Model model) {
-        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("user_authentication", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "view/userController/user";
     }
 

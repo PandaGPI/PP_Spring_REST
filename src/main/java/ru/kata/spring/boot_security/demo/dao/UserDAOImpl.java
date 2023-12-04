@@ -8,8 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,21 +19,24 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager entityManager;
 
     @Override
-    public void saveOrUpdate(User user) {
+    public void saveOrUpdate(User user, String[] roles) {
         User userFromDB = getUserById(user.getId());
+        Set<Roles> rolesSet = Arrays.stream(roles)
+                .map(this::getRoleByName)
+                .collect(Collectors.toSet());
         if (userFromDB != null) {
-            user.setRoles(userFromDB.getRoles());
+            user.setRoles(rolesSet);
             entityManager.merge(user);
         } else {
-            user.setRoles(Collections.singleton(new Roles(1L, "ROLE_USER")));
-            entityManager.merge(user);
+            user.setRoles(rolesSet);
+            entityManager.persist(user);
         }
     }
 
     @Override
-    public List<User> getListUsers() {
+    public Set<User> getListUsers() {
         TypedQuery<User> userList = entityManager.createQuery("FROM User", User.class);
-        return userList.getResultList();
+        return userList.getResultList().stream().collect(Collectors.toSet());
     }
 
     @Override
@@ -51,18 +53,18 @@ public class UserDAOImpl implements UserDAO {
         entityManager.remove(getUserById(id));
     }
 
-    @Override
-    public User getUserByName(String name) {
-        Query query = entityManager.createQuery("FROM User WHERE name = :name");
-        query.setParameter("name", name);
-        return (User) query.getSingleResult();
-    }
+
 
     @Override
     public Set<Roles> getListRoles() {
         TypedQuery<Roles> rolesList = entityManager.createQuery("FROM Roles", Roles.class);
-        return rolesList.getResultStream().collect(Collectors.toSet());
+        return rolesList.getResultList().stream().collect(Collectors.toSet());
     }
 
-
+    @Override
+    public Roles getRoleByName(String role) {
+        Query query = entityManager.createQuery("FROM Roles WHERE role = :role");
+        query.setParameter("role", role);
+        return (Roles) query.getSingleResult();
+    }
 }

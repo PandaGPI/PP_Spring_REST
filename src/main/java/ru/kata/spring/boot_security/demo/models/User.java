@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -20,14 +22,19 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "surName")
     private String surName;
 
+    @Column(name = "age")
     private int age;
 
-    private String major;
+    @Column(name = "mail", unique = true)
+    private String mail;
 
+    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -35,11 +42,11 @@ public class User implements UserDetails {
 
     public User(){}
 
-    public User(String name, String surname, int age, String major, String password, Set<Roles> roles) {
+    public User(String name, String surname, int age, String mail, String password, Set<Roles> roles) {
         this.name = name;
         this.surName = surname;
         this.age = age;
-        this.major = major;
+        this.mail = mail;
         this.password = password;
         this.roles = roles;
     }
@@ -76,12 +83,12 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getMajor() {
-        return major;
+    public String getMail() {
+        return mail;
     }
 
-    public void setMajor(String major) {
-        this.major = major;
+    public void setMail(String major) {
+        this.mail = major;
     }
 
     public void setPassword(String password) {
@@ -92,6 +99,9 @@ public class User implements UserDetails {
         return roles;
     }
 
+    public String getRolesToString() {
+        return roles.stream().map(r -> r.getAuthority() + "\n").collect(Collectors.joining());
+    }
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
@@ -103,7 +113,7 @@ public class User implements UserDetails {
                 ", name='" + name + '\'' +
                 ", surName='" + surName + '\'' +
                 ", age=" + age +
-                ", major='" + major + '\'' +
+                ", major='" + mail + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
