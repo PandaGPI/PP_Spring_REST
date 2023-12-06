@@ -226,7 +226,8 @@
                                 <select id="editUserRole" class="form-control" name="listRoles" multiple required>
                                     <option th:each="role : ${listRoles}"
                                             th:value="${role.role}"
-                                            th:text="${role.role}">
+                                            th:text="${role.role}"
+                                            th:selected="${user.roles.contains(role)}">
                                     </option>
                                 </select>
                             </div>
