@@ -11,7 +11,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 
 @Service
 @Transactional
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailService, UserDetailsService {
 
     private final UserDetailDAO userDetailDAO;
 
@@ -23,10 +23,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDetailDAO.getUserByName(username);
+        User user = getUserByName(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        return userDetailDAO.getUserByName(name);
     }
 }
