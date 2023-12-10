@@ -2,7 +2,6 @@ const allUsersURL = 'http://localhost:7070/api/users'
 
 showAllUsers()
 
-
 function showAllUsers() {
     console.log("showAllUsers activated")
     fetch(allUsersURL)
@@ -13,7 +12,7 @@ function showAllUsers() {
                     <td>${user.id}</td>
                     <td>${user.name}</td>
                     <td>${user.surName}</td>
-                    <td>${user.age}</td>
+                    <td>${user.age}</td> 
                     <td>${user.mail}</td>
                     <td>${user.rolesToString}</td>
                     <td>
@@ -27,7 +26,6 @@ function showAllUsers() {
             }
         })
 }
-
 
 const reloadButton = document.querySelector("button#btnEdit");
 reloadButton.addEventListener("click", () => {

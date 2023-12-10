@@ -16,26 +16,6 @@ public class Controller {
         this.userService = userService;
     }
 
-//    @GetMapping("/admin")
-//    public String allUsersAdmin(Model model) {
-//        model.addAttribute("users", userService.getListUsers());
-//        model.addAttribute("user_authentication", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//        model.addAttribute("listRoles", userService.getListRoles());
-//        return "/view/adminController/admin";
-//    }
-
-//    @PostMapping("/admin/saveInfo")
-//    public String saveUserAdmin(@ModelAttribute("user") User user) {
-//        userService.saveOrUpdate(user);
-//        return "redirect:/admin";
-//    }
-
-//    @PostMapping("/admin/delInfo")
-//    public String deleteUserAdmin(@RequestParam("id") Long id) {
-//        userService.delete(id);
-//        return "redirect:/admin";
-//    }
-
     @GetMapping("/user")
     public String user() {
         return "/view/controller/user";
