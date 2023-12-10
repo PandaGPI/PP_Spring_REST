@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
-import ru.kata.spring.boot_security.demo.models.Roles;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.Set;
@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveOrUpdate(User user, String[] roles) {
-        userDAO.saveOrUpdate(user, roles);
+    public void saveOrUpdate(User user) {
+        userDAO.saveOrUpdate(user);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Roles> getListRoles() {
-        return userDAO.getListRoles();
+    public Set<Role> getRoles() {
+        return userDAO.getRoles();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Roles getRoleByName(String role) {
+    public Role getRoleByName(String role) {
         return userDAO.getRoleByName(role);
     }
 }

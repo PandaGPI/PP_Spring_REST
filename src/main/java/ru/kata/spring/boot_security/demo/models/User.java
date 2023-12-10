@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Collection;
@@ -38,11 +40,14 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Roles> roles;
+    @JoinTable(name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "roles_id")})
+    private Set<Role> roles;
 
     public User(){}
 
-    public User(String name, String surname, int age, String mail, String password, Set<Roles> roles) {
+    public User(String name, String surname, int age, String mail, String password, Set<Role> roles) {
         this.name = name;
         this.surName = surname;
         this.age = age;
@@ -95,14 +100,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Set<Roles> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
     public String getRolesToString() {
         return roles.stream().map(r -> r.getAuthority() + "\n").collect(Collectors.joining());
     }
-    public void setRoles(Set<Roles> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

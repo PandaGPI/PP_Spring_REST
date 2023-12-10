@@ -1,14 +1,13 @@
 package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.kata.spring.boot_security.demo.models.Roles;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,16 +18,11 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager entityManager;
 
     @Override
-    public void saveOrUpdate(User user, String[] roles) {
+    public void saveOrUpdate(User user) {
         User userFromDB = getUserById(user.getId());
-        Set<Roles> rolesSet = Arrays.stream(roles)
-                .map(this::getRoleByName)
-                .collect(Collectors.toSet());
         if (userFromDB != null) {
-            user.setRoles(rolesSet);
             entityManager.merge(user);
         } else {
-            user.setRoles(rolesSet);
             entityManager.persist(user);
         }
     }
@@ -53,18 +47,16 @@ public class UserDAOImpl implements UserDAO {
         entityManager.remove(getUserById(id));
     }
 
-
-
     @Override
-    public Set<Roles> getListRoles() {
-        TypedQuery<Roles> rolesList = entityManager.createQuery("FROM Roles", Roles.class);
+    public Set<Role> getRoles() {
+        TypedQuery<Role> rolesList = entityManager.createQuery("FROM Role", Role.class);
         return rolesList.getResultList().stream().collect(Collectors.toSet());
     }
 
     @Override
-    public Roles getRoleByName(String role) {
-        Query query = entityManager.createQuery("FROM Roles WHERE role = :role");
+    public Role getRoleByName(String role) {
+        Query query = entityManager.createQuery("FROM Role WHERE role = :role");
         query.setParameter("role", role);
-        return (Roles) query.getSingleResult();
+        return (Role) query.getSingleResult();
     }
 }

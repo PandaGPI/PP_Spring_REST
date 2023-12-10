@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Roles implements GrantedAuthority {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,25 +26,26 @@ public class Roles implements GrantedAuthority {
 
     @Transient
     @ManyToMany(mappedBy = "roles")
-    Set<User> users;
+    private Set<User> users;
 
-    public Roles(){};
+    public Role(){};
 
-    public Roles(Long id, String role) {
+    public Role(Long id, String role) {
         this.id = id;
         this.role = role;
     }
 
-    public Roles(String role, Set<User> users) {
+    public Role(Long id, String role, Set<User> users) {
+        this.id = id;
         this.role = role;
         this.users = users;
     }
 
-    public Long getId_role() {
+    public Long getId() {
         return id;
     }
 
-    public void setId_role(Long id_role) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,6 +55,14 @@ public class Roles implements GrantedAuthority {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override
